@@ -3,33 +3,31 @@ package kr.jaehyeon.flutter_pedometer
 import androidx.annotation.NonNull
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.EventChannel
+
+import android.hardware.Sensor
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 
 /** FlutterPedometerPlugin */
-class FlutterPedometerPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+class FlutterPedometerPlugin: FlutterPlugin {
+  private lateinit var stepDetectionChannel: EventChannel
+  private lateinit var stepCountChannel: EventChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_pedometer")
-    channel.setMethodCallHandler(this)
-  }
+    stepDetectionChannel = EventChannel(flutterPluginBinding.binaryMessenger, "step_detection")
+    stepCountChannel = EventChannel(flutterPluginBinding.binaryMessenger, "step_count")
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
-    }
+    val stepDetectionHandler = SensorStreamHandler(flutterPluginBinding, Sensor.TYPE_STEP_DETECTOR)
+    val stepCountHandler = SensorStreamHandler(flutterPluginBinding, Sensor.TYPE_STEP_COUNTER)
+
+    stepDetectionChannel.setStreamHandler(stepDetectionHandler)
+    stepCountChannel.setStreamHandler(stepCountHandler)
+
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
+    stepDetectionChannel.setStreamHandler(null)
+    stepCountChannel.setStreamHandler(null)
   }
 }

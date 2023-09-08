@@ -27,6 +27,12 @@ class MockFlutterPedometerPlatform with MockPlatformInterfaceMixin implements Fl
     return Future.value(999);
   }
   
+  @override
+  Stream<int> get stepCountStream => Stream.value(999);
+  
+  @override
+  Stream<int> get stepDetectionStream => Stream.value(1);
+  
 }
 
 void main() {

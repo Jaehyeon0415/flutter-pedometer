@@ -24,6 +24,10 @@ abstract class FlutterPedometerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  Stream<int> get stepCountStream;
+
+  Stream<int> get stepDetectionStream;
+
   Future<bool> isStepAvailable() {
     throw UnimplementedError('isStepAvailable() has not been implemented.');
   }

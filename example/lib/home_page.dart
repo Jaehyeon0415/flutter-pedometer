@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import 'package:flutter_pedometer/flutter_pedometer.dart';
 import 'package:flutter_pedometer_example/app_route.dart';
 import 'package:flutter_pedometer_example/permission_service.dart';
 
@@ -45,7 +49,11 @@ class _HomePageState extends State<HomePage> {
                           return;
                         }
 
-                        Navigator.pushNamed(context, RouteName.pedometer);
+                        FlutterPedometer.getPermissionStatus();
+
+                        Platform.isAndroid
+                          ? Navigator.pushNamed(context, RouteName.aosPedometer)
+                          : Navigator.pushNamed(context, RouteName.iosPedometer);
                       });
                     },
                     child: DecoratedBox(

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pedometer/flutter_pedometer.dart';
 import 'package:flutter_pedometer/pedometer_permission_status.dart';
 
-class PedometerPage extends StatefulWidget {
-  const PedometerPage({super.key});
+class IOSPedometerPage extends StatefulWidget {
+  const IOSPedometerPage({super.key});
 
   @override
-  State<PedometerPage> createState() => _PedometerPageState();
+  State<IOSPedometerPage> createState() => _IOSPedometerPageState();
 }
 
-class _PedometerPageState extends State<PedometerPage> {
+class _IOSPedometerPageState extends State<IOSPedometerPage> {
 
   bool isStepAvailable = false;
   PedometerPermissionStatus status = PedometerPermissionStatus.notDetermined;
@@ -79,7 +79,7 @@ class _PedometerPageState extends State<PedometerPage> {
         elevation: 0.2,
         centerTitle: true,
         title: const Text(
-          'Pedometer',
+          'IOS Pedometer',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
